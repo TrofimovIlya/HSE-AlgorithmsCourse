@@ -1,3 +1,5 @@
+// Трофимов Илья
+// 272(2)ПИ
 
 #include <iostream>
 using namespace std;
