@@ -1,20 +1,26 @@
 /*
-    Author: Ilya Trofimov
-    Date: Sat, 30 Nov 2013
+* @Author: Ilya Trofimov
+* @Date:   2014-03-02 02:27:18
+* @Last Modified by:   Ilya Trofimov
+* @Last Modified time: 2014-03-02 19:51:10
 */
 
 void __heapify(int array[], int ind, int length) {
     int left = ind * 2 + 1;
     int right = ind * 2 + 2;
-    int largest = 0; 
+    int largest = 0;
     int temp = 0;
 
-    if (left < length && array[left] > array[ind])
+    if (left < length && array[left] > array[ind]) {
         largest = left;
-    else 
+    } else {
         largest = ind;
-    if (right < length && array[right] > array[largest])
+    }
+
+    if (right < length && array[right] > array[largest]) {
         largest = right;
+    }
+
     if (largest != ind) {
         temp = array[largest];
         array[largest] = array[ind];
@@ -24,8 +30,9 @@ void __heapify(int array[], int ind, int length) {
 }
 
 void __buildHeap(int array[], int length) {
-    for (int i = length / 2; i >= 0; --i)
+    for (int i = length / 2; i >= 0; --i) {
         __heapify(array, i, length);
+    }
 }
 
 void heapSort(int array[], int length) {
@@ -36,5 +43,5 @@ void heapSort(int array[], int length) {
         array[i] = array[0];
         array[0] = temp;
         __heapify(array, 0, i);
-    } 
+    }
 }

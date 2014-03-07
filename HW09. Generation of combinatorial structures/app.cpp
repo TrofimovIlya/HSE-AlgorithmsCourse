@@ -13,120 +13,158 @@
 using namespace std;
 
 // Prints an array
-void print(long long* arr, long long n) {
-    for (int i = 0; i < n; i++)
+void print(long long *arr, long long n) {
+    for (int i = 0; i < n; i++) {
         cout << arr[i] << ' ';
+    }
+
     cout << endl;
 }
 
 // Calculates factorial
 long long fact(long long n) {
-    if (n == 0)
+    if (n == 0) {
         return 1;
+    }
+
     return n * fact(n - 1);
 }
 
 // Counts accomodations
 long long countAccommodation(long long n, long long k) {
-    if (k == 1)
+    if (k == 1) {
         return n;
+    }
+
     return (n - k + 1) * countAccommodation(n, k - 1);
 }
 
 // Counts combinations
 long long countCombination(long long n, long long k) {
-    long long** temp = new long long*[n + 1];
-    for (int i = 0; i <= n; i++)
+    long long **temp = new long long*[n + 1];
+
+    for (int i = 0; i <= n; i++) {
         temp[i] = new long long[k + 1];
+    }
 
     for (int i = 0; i <= n; i++) {
         temp[i][0] = 1;
-        if (i <= k)
-            temp[i][i] = 1;
-    }
-    for (int i = 0; i <= n; i++)
-        for (int j = i + 1; j <= k; j++)
+
+        if (i <= k) {
             temp[i][j] = 0;
+        }
+
+
+    }
+
+    for (int i = 0; i <= n; i++)
+        for (int j = i + 1; j <= k; j++) {
+            temp[i][j] = 0;
+        }
 
     for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= min(i, k); j++)
+        for (int j = 1; j <= min(i, k); j++) {
             temp[i][j] = temp[i - 1][j - 1] + temp[i - 1][j];
+        }
+
     long long result = temp[n][k];
 
-    for (int i = 0; i <= n; i++)
+    for (int i = 0; i <= n; i++) {
         delete [] temp[i];
+    }
+
     delete [] temp;
 
     return result;
 }
 
 // Helper for iterationPermutation
-bool isFinal(long long* permutation, long long n, long long k) {
-    for (int i = n - 2; i >= n - k;--i)
-        if (permutation[i] < permutation[i + 1])
+bool isFinal(long long *permutation, long long n, long long k) {
+    for (int i = n - 2; i >= n - k; --i)
+        if (permutation[i] < permutation[i + 1]) {
             return false;
+        }
+
     return true;
 }
 
 // Helper for iterationPermutation
-void nextPermutation(long long* permutation, long long n) {
+void nextPermutation(long long *permutation, long long n) {
     int i, j;
-    for (i = n - 2; permutation[i] > permutation[i + 1];--i);
-    for (j = n - 1; permutation[j] < permutation[i];--j);
+
+    for (i = n - 2; permutation[i] > permutation[i + 1]; --i);
+
+    for (j = n - 1; permutation[j] < permutation[i]; --j);
+
     swap(permutation[i], permutation[j]);
+
     for (int k = j; ; k++)
         if (k == n - 1 || permutation[j] > permutation[k + 1]) {
             swap(permutation[j], permutation[k]);
             break;
         }
-    for (j = 0; j < n - i - j - 2; j++)
+
+    for (j = 0; j < n - i - j - 2; j++) {
         swap(permutation[i + j + 1], permutation[n - j - 1]);
+    }
 }
 
 // Generates permuations by iterations
 void generatesPermutationIteration(long long n) {
-    long long* permutation = new long long[n];
-    for (int i = 0; i < n; i++)
+    long long *permutation = new long long[n];
+
+    for (int i = 0; i < n; i++) {
         permutation[i] = i + 1;
+    }
+
+
     print(permutation, n);
 
-    if (n != 1)
+    if (n != 1) {
         do {
             nextPermutation(permutation, n);
             print(permutation, n);
-        } while(!isFinal(permutation, n, n));
+        } while (!isFinal(permutation, n, n));
+    }
 
     delete [] permutation;
 }
 
 // Generates permutations by recursion
-void generatePermutationRecursive(long long n, long long k, long long* permutation) {
+void generatePermutationRecursive(long long n, long long k, long long *permutation) {
     if (k == n) {
-        long long* arr = new long long[n];
-        for (int i = 0; i < n; i++)
+        long long *arr = new long long[n];
+
+        for (int i = 0; i < n; i++) {
             arr[permutation[i]] = i + 1;
+        }
+
         print(arr, n);
 
         delete [] arr;
 
-        return ;
+        return;
     }
-    for (int i = 0; i < n; i++)
+
+    for (int i = 0; i < n; i++) {
         if (permutation[i] == -1) {
             permutation[i] = k;
             generatePermutationRecursive(n, k + 1, permutation);
             permutation[i] = -1;
         }
+    }
 }
 
 // Generates accomodation
 void generateAccommodation(long long n, long long k, vector<long long> permutation) {
     if (permutation.size() == k) {
-        for (int i = 0; i < permutation.size(); i++)
+        for (int i = 0; i < permutation.size(); i++) {
             cout << permutation[i] + 1 << ' ';
+        }
+
         cout << endl;
 
-        return ;
+        return;
     }
 
     for (int i = 0; i < n; i++)
@@ -140,8 +178,10 @@ void generateAccommodation(long long n, long long k, vector<long long> permutati
 // Generates combination
 void generateCombination(long long n, long long k, long long l, vector<long long> permutation) {
     if (permutation.size() == k) {
-        for (int i = 0; i < permutation.size(); i++)
+        for (int i = 0; i < permutation.size(); i++) {
             cout << permutation[i] + 1 << ' ';
+        }
+
         cout << endl;
 
         return;
@@ -158,15 +198,17 @@ void generateCombination(long long n, long long k, long long l, vector<long long
 // Generates pertition
 void generatePartition(long long n, long long k, vector<long long> partition) {
     if (n == 0) {
-        for (int i = 0; i < partition.size(); i++)
+        for (int i = 0; i < partition.size(); i++) {
             cout << partition[i] << ' ';
+        }
+
         cout << endl;
 
         return;
     }
 
-    for (int i = k; i > 0;--i)
-        if(i <= n) {
+    for (int i = k; i > 0; --i)
+        if (i <= n) {
             partition.push_back(i);
             generatePartition(n - i, i, partition);
             partition.pop_back();
@@ -176,7 +218,8 @@ void generatePartition(long long n, long long k, vector<long long> partition) {
 void main() {
     setlocale(LC_ALL, "Russian");
     int n, k, choice, subChoice;
-    do { 
+
+    do {
         cout << "1 - Количество перестановок, размещений и сочетаний;"  << endl;
         cout << "2 - Генерация перестановок итерационым или рекурсивным способом;" << endl;
         cout << "3 - Генерация размещений;" << endl;
@@ -220,12 +263,16 @@ void main() {
             if (subChoice == 1) {
                 generatesPermutationIteration(n);
             } else if (subChoice == 2) {
-                long long* permutation = new long long[n];
-                for (int i = 0; i < n; i++)
+                long long *permutation = new long long[n];
+
+                for (int i = 0; i < n; i++) {
                     permutation[i] = -1;
+                }
+
                 generatePermutationRecursive(n, 0, permutation);
                 delete [] permutation;
             }
+
             cout << endl;
             system("pause");
             cout << endl;
@@ -236,6 +283,7 @@ void main() {
                 cout << "Введите размер подмножества, k: ";
                 cin >> k;
             } while (n < 1 || k < 1 || k >= n);
+
             vector<long long> accomodation;
             generateAccommodation(n, k, accomodation);
             vector<long long>().swap(accomodation);
@@ -249,6 +297,7 @@ void main() {
                 cout << "Введите размер подмножества, k: ";
                 cin >> k;
             } while (n < 1 || k < 1 || k >= n);
+
             vector<long long> combinations;
             generateCombination(n, k, 0, combinations);
             vector<long long>().swap(combinations);
@@ -260,6 +309,7 @@ void main() {
                 cout << "Введите количество элементов, n: ";
                 cin >> n;
             } while (n < 1);
+
             vector<long long> partition;
             generatePartition(n, n, partition);
             vector<long long>().swap(partition);

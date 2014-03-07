@@ -1,13 +1,17 @@
 /*
-    Author: Ilya Trofimov
-    Date: Sat, 30 Nov 2013
+* @Author: Ilya Trofimov
+* @Date:   2014-03-02 19:12:01
+* @Last Modified by:   Ilya Trofimov
+* @Last Modified time: 2014-03-02 19:51:14
 */
 
-void __merge(int array[], int start, int middle, int end) {
-    int* temp = new int[end + 1];
 
-    for (int i = start; i <= end; i++)
+void __merge(int array[], int start, int middle, int end) {
+    int *temp = new int[end + 1];
+
+    for (int i = start; i <= end; i++) {
         temp[i] = array[i];
+    }
 
     int position1 = start;
     int position2 = middle + 1;
